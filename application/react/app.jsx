@@ -7,12 +7,12 @@ import thunk from 'redux-thunk';
 import router from './router';
 import reducer from 'reducers/default';
 
-window.fynd.store = createStore(
+window.namespace.store = createStore(
   combineReducers({ default: reducer }),
   applyMiddleware(thunk)
 );
 
 render(
-  <Provider store={window.fynd.store}>{router}</Provider>,
+  <Provider store={window.namespace.store}>{router}</Provider>,
   document.getElementById('root')
 )

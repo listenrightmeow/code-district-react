@@ -15,7 +15,7 @@ export default (err, callback, reducers, view) => {
         store[reducer] = module;
 
         if (++idx === reducers.length) {
-          window.fynd.store.replaceReducer(createReducer(store));
+          window.namespace.store.replaceReducer(createReducer(store));
           ready = true;
         }
       }).catch(err);
