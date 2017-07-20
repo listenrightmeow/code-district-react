@@ -1,0 +1,27 @@
+{
+  "env": {
+    "browser": true,
+    "jasmine": true,
+    "jquery": true
+  },
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "plugins": [
+    "jasmine"
+  ],
+  "rules": {
+    "arrow-body-style": 0,
+    "comma-dangle": 0,
+    "jasmine/named-spy": 0,
+    "jasmine/no-focused-tests": 2,
+    "jasmine/no-disabled-tests": 1,
+    "jasmine/no-spec-dupes": [1, "block"],
+    "jasmine/no-suite-dupes": [1, "block"],
+    "jasmine/missing-expect": [0, "expect()"],
+    "jasmine/no-suite-callback-args": 2,
+    "jasmine/valid-expect": 1,
+    "jasmine/no-assign-spyon": 0,
+    "max-len": 0,
+    "object-shorthand": 0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "react-demo",
+  "description": "",
+  "main": "",
+  "authors": [
+    "listenrightmeow <mike.dyer@codedistrict.io>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/listenrightmeow/code-district-react",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "neat": "^2.1.0"
+  }
+}

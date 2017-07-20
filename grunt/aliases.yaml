@@ -1,0 +1,18 @@
+encrypt:
+  - 'copy:vault'
+  - 'vault'
+  - 'setup'
+
+setup:
+  - 'decrypt'
+  - 'envfile'
+
+start:
+  - 'setup'
+  - 'shell:source'
+
+webpack:
+  - 'setup'
+  - 'clean:dist'
+  - 'copy:dist'
+  - 'shell:webpack'

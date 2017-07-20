@@ -1,0 +1,5 @@
+{
+  "presets": ["airbnb", "es2015-native-modules", "react"],
+  "plugins": ["add-module-exports", "babel-plugin-add-module-exports", "transform-object-rest-spread", "transform-object-assign"],
+  "comments": false
+}

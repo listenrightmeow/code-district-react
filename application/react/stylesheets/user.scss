@@ -1,0 +1,28 @@
+@import "~bourbon/app/assets/stylesheets/bourbon";
+@import "bower/neat/core/neat";
+
+#user {
+  @include grid-visual;
+  @include grid-container;
+  @include grid-column(12);
+
+  background-color: #999;
+
+  img, p {
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  p {
+    color: #fff;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "variables": {
+    "ansible_connection": "docker",
+		"ansible_host": "fynd",
+		"ansible_user": "root",
+    "docker_host": "fynd-menu",
+    "id": "packer",
+    "BUILD_ENVIRONMENT": "",
+    "LOGGLY_PASSWORD": "",
+    "LOGGLY_SUBDOMAIN": "",
+    "LOGGLY_TOKEN": "",
+    "LOGGLY_USERNAME": ""
+  },
+  "builders": [
+    {
+      "type": "docker",
+      "image": "python:2.7",
+      "commit": true,
+      "changes": [
+        "ENV BUILD_PROVISIONER {{user `id`}}",
+        "ENV ENVIRONMENT {{user `BUILD_ENVIRONMENT`}}",
+        "ENV ADMIN_USER {{user `ADMIN_USER`}}",
+        "ENV ADMIN_EMAIL {{user `ADMIN_EMAIL`}}",
+        "ENV BUILD_ENVIRONMENT {{user `BUILD_ENVIRONMENT`}}",
+        "ENV DJANGO_LOG_LEVEL {{user `DJANGO_LOG_LEVEL`}}",
+        "ENV EMAIL_ADDRESS {{user `EMAIL_ADDRESS`}}",
+        "ENV EMAIL_HOST {{user `EMAIL_HOST`}}",
+        "ENV EMAIL_PASSWORD {{user `EMAIL_PASSWORD`}}",
+        "ENV EMAIL_PORT {{user `EMAIL_PORT`}}",
+        "ENV EMAIL_USER {{user `EMAIL_USER`}}",
+        "ENV ENVIRONMENT {{user `ENVIRONMENT`}}",
+        "ENV GREENBITS_USERNAME {{user `GREENBITS_USERNAME`}}",
+        "ENV GREENBITS_PASSWORD {{user `GREENBITS_PASSWORD`}}",
+        "ENV LOGGLY_PASSWORD {{ user `LOGGLY_PASSWORD` }}",
+        "ENV LOGGLY_SUBDOMAIN {{ user `LOGGLY_SUBDOMAIN` }}",
+        "ENV LOGGLY_TOKEN {{ user `LOGGLY_TOKEN` }}",
+        "ENV LOGGLY_USERNAME {{ user `LOGGLY_USERNAME` }}",
+        "ENV POSTGRES_DB {{user `POSTGRES_DB`}}",
+        "ENV POSTGRES_HOST {{user `POSTGRES_HOST`}}",
+        "ENV POSTGRES_PASSWORD {{user `POSTGRES_PASSWORD`}}",
+        "ENV POSTGRES_USER {{user `POSTGRES_USER`}}",
+        "ENV SECRET_KEY {{user `SECRET_KEY`}}",
+        "EXPOSE 8000",
+        "WORKDIR /var/www/menu"
+      ],
+      "run_command": ["-d", "-i", "-t", "--name", "{{user `ansible_host`}}", "{{.Image}}", "/bin/bash"]
+    }
+  ],
+  "post-processors": [
+    [
+			{
+				"type": "docker-tag",
+				"repository": "{{user `docker_host`}}",
+				"tag": "{{user `BUILD_ENVIRONMENT`}}"
+			}
+		]
+  ],
+  "provisioners": [
+    {
+			"type": "shell",
+			"inline": [
+				"apt-get -y update",
+        "apt-get install -y sudo",
+				"rm -rf /var/lib/apt/lists/*",
+				"apt-get clean"
+			]
+		}, {
+      "type": "ansible",
+			"groups": ["packer"],
+      "playbook_file": "ansible/playbooks/menu/directories.yml",
+			"extra_arguments": [
+				"--extra-vars",
+				"ansible_host={{user `ansible_host`}} ansible_connection={{user `ansible_connection`}} ansible_user={{user `ansible_user`}}"
+			]
+    }, {
+      "type": "file",
+      "source": "application/django/",
+      "destination": "/var/www/menu"
+    }, {
+      "type": "ansible",
+			"groups": ["packer"],
+      "playbook_file": "ansible/playbooks/menu/pip.yml",
+			"extra_arguments": [
+				"--extra-vars",
+				"ansible_host={{user `ansible_host`}} ansible_connection={{user `ansible_connection`}} ansible_user={{user `ansible_user`}}"
+			]
+    }
+  ]
+}
